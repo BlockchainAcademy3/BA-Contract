@@ -4,6 +4,13 @@ pragma solidity ^0.8.17;
 
 import "@openzeppelin/contracts/token/ERC721/IERC721Receiver.sol";
 
+
+/**
+ * @title ERC721 Token Contract
+ * 
+ * @notice This contract is mainly based on solmate/ERC721.sol
+ *         By default, not implement IERC721Metadata 
+ */
 contract ERC721 {
     address internal constant ZERO_ADDRESS = address(0);
 
