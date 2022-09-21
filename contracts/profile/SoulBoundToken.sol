@@ -33,4 +33,15 @@ abstract contract SoulBoundToken is ERC721 {
 
         return tokenId;
     }
+
+    function _beforeTokenTransfer(
+        address _from,
+        address _to,
+        uint256 _tokenId
+    ) internal virtual override {
+        require(
+            _from == ZERO_ADDRESS || _to == ZERO_ADDRESS,
+            "SBT: No transfers"
+        );
+    }
 }

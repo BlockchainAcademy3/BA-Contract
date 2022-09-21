@@ -4,12 +4,11 @@ pragma solidity ^0.8.17;
 
 import "@openzeppelin/contracts/token/ERC721/IERC721Receiver.sol";
 
-
 /**
  * @title ERC721 Token Contract
- * 
+ *
  * @notice This contract is mainly based on solmate/ERC721.sol
- *         By default, not implement IERC721Metadata 
+ *         By default, not implement IERC721Metadata
  */
 contract ERC721 {
     address internal constant ZERO_ADDRESS = address(0);
@@ -17,8 +16,8 @@ contract ERC721 {
     string public name;
     string public symbol;
 
-    mapping(uint256 => address) internal ownerOf;
-    mapping(address => uint256) internal balanceOf;
+    mapping(uint256 => address) public ownerOf;
+    mapping(address => uint256) public balanceOf;
 
     mapping(uint256 => address) public getApproved;
     mapping(address => mapping(address => bool)) public isApprovedForAll;
@@ -82,6 +81,8 @@ contract ERC721 {
         address to,
         uint256 id
     ) public virtual {
+        _beforeTokenTransfer(from, to, id);
+
         require(from == ownerOf[id], "WRONG_FROM");
 
         require(to != ZERO_ADDRESS, "INVALID_RECIPIENT");
@@ -106,6 +107,8 @@ contract ERC721 {
         delete getApproved[id];
 
         emit Transfer(from, to, id);
+
+        _afterTokenTransfer(from, to, id);
     }
 
     function safeTransferFrom(
@@ -228,4 +231,16 @@ contract ERC721 {
             "UNSAFE_RECIPIENT"
         );
     }
+
+    function _beforeTokenTransfer(
+        address _from,
+        address _to,
+        uint256 _tokenId
+    ) internal virtual {}
+
+    function _afterTokenTransfer(
+        address _from,
+        address _to,
+        uint256 _tokenId
+    ) internal virtual {}
 }
