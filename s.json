@@ -1,0 +1,39 @@
+[
+  {
+    "description": "Community Ethereum Development Conference",
+    "external_url": "https://api.poap.tech/metadata/7/222",
+    "home_url": "https://app.poap.xyz/token/222",
+    "image_url": "https://www.poap.xyz/events/badges/edcon-18.png",
+    "name": "EDCON",
+    "year": 2018,
+    "tags": ["poap", "event"],
+    "attributes": [
+      { "trait_type": "startDate", "value": "03-May-2018" },
+      { "trait_type": "endDate", "value": "05-May-2018" },
+      { "trait_type": "virtualEvent", "value": "false" },
+      { "trait_type": "city", "value": "Toronto" },
+      { "trait_type": "country", "value": "Canada" },
+      { "trait_type": "eventURL", "value": "https://2018.edcon.io/" }
+    ]
+  },
+  {
+    "description": "Two social and technological shifts which are revolutionizing financial and governance systems.",
+    "external_url": "https://api.poap.tech/metadata/89/5567",
+    "home_url": "https://app.poap.xyz/token/5567",
+    "image_url": "https://www.poap.xyz/events/badges/nz-tour-2019.png",
+    "name": "Decentralized Finance & Governance",
+    "year": 2019,
+    "tags": ["poap", "event"],
+    "attributes": [
+      { "trait_type": "startDate", "value": "02-Dec-2019" },
+      { "trait_type": "endDate", "value": "02-Dec-2019" },
+      { "trait_type": "virtualEvent", "value": "false" },
+      { "trait_type": "city", "value": "Christchurch" },
+      { "trait_type": "country", "value": "New Zealand" },
+      {
+        "trait_type": "eventURL",
+        "value": "https://www.eventbrite.com/e/decentralized-finance-governance-new-ways-to-coordinate-society-chch-tickets-79101519775"
+      }
+    ]
+  }
+]
