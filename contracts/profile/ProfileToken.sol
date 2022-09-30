@@ -2,10 +2,10 @@
 
 pragma solidity ^0.8.17;
 
-import "@openzeppelin/contracts/access/Ownable.sol";
-import "@openzeppelin/contracts/utils/Strings.sol";
-
+import "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
 import "./SoulBoundToken.sol";
+
+import "@openzeppelin/contracts/utils/Strings.sol";
 
 /**
  * @title Profile NFT
@@ -23,14 +23,18 @@ import "./SoulBoundToken.sol";
  *
  */
 
-contract ProfileToken is Ownable, SoulBoundToken {
+contract ProfileToken is OwnableUpgradeable, SoulBoundToken {
     using Strings for uint256;
 
     string public baseURI;
 
-    constructor(string memory _name, string memory _symbol)
-        SoulBoundToken(_name, _symbol)
-    {}
+    function initialize(string memory _name, string memory _symbol)
+        public
+        initializer
+    {
+        __Ownable_init();
+        __SBT_init(_name, _symbol);
+    }
 
     function setBaseURI(string memory _baseURI) public onlyOwner {
         baseURI = _baseURI;

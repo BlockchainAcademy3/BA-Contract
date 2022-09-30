@@ -2,16 +2,19 @@
 
 pragma solidity ^0.8.17;
 
-import "../base/ERC721.sol";
+import "../base/ERC721Upgradeable.sol";
 
-abstract contract SoulBoundToken is ERC721 {
+abstract contract SoulBoundToken is ERC721Upgradeable {
     uint256 public counter;
 
     mapping(address => uint256) public soulBoundTokenId;
 
-    constructor(string memory _name, string memory _symbol)
-        ERC721(_name, _symbol)
-    {}
+    function __SBT_init(string memory _name, string memory _symbol)
+        internal
+        onlyInitializing
+    {
+        __ERC721_init(_name, _symbol);
+    }
 
     modifier onlyOne(address _owner) {
         require(

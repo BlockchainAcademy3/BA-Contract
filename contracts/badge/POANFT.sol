@@ -2,20 +2,35 @@
 
 pragma solidity ^0.8.17;
 
-import "@openzeppelin/contracts/access/Ownable.sol";
+import "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
+import "@openzeppelin/contracts-upgradeable/security/PausableUpgradeable.sol";
+import "../base/ERC721Upgradeable.sol";
+
 import "@openzeppelin/contracts/utils/Strings.sol";
 
-import "../base/ERC721.sol";
-
-contract POANFT is ERC721, Ownable {
+/**
+ * @title Proof-of-Attendance NFT
+ *
+ * @notice This contract is used to mint NFTs for Proof-of-Attendance events.
+ *
+ *         Event is identified by a unique event ID. Event details are stored on server.
+ *
+ *         Token URI = Base URI + Event Id
+ *         E.g.
+ *           Token id 2 and 5 are both for event 1, then
+ *           tokenURI(2) = tokenURI(5) = "https://api.web3edu.xyz/poa/1
+ */
+contract POANFT is OwnableUpgradeable, PausableUpgradeable, ERC721Upgradeable {
     using Strings for uint256;
 
     uint256 public counter;
 
     string public baseURI;
 
+    // Token id => Event Id
     mapping(uint256 => uint256) public eventIds;
 
+    // Event id => Expiry date
     mapping(uint256 => uint256) public expiryForEvents;
 
     event BaseURIChanged(string oldURI, string newURI);
@@ -26,9 +41,14 @@ contract POANFT is ERC721, Ownable {
         uint256 indexed eventId
     );
 
-    constructor(string memory _name, string memory _symbol)
-        ERC721(_name, _symbol)
-    {}
+    function initialize(string memory _name, string memory _symbol)
+        public
+        initializer
+    {
+        __Ownable_init();
+        __Pausable_init();
+        __ERC721_init(_name, _symbol);
+    }
 
     modifier notExpiry(uint256 _eventId) {
         uint256 expiryDate = expiryForEvents[_eventId];

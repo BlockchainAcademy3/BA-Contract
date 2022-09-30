@@ -2,12 +2,12 @@
 
 pragma solidity ^0.8.17;
 
-import "@openzeppelin/contracts/access/Ownable.sol";
+import "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
+import "../base/ERC721Upgradeable.sol";
+
 import "@openzeppelin/contracts/utils/Strings.sol";
 
-import "../base/ERC721.sol";
-
-contract CourseNFT is Ownable, ERC721 {
+contract CourseNFT is OwnableUpgradeable, ERC721Upgradeable {
     using Strings for uint256;
 
     uint256 public counter;
@@ -32,9 +32,13 @@ contract CourseNFT is Ownable, ERC721 {
         uint256 indexed courseId
     );
 
-    constructor(string memory _name, string memory _symbol)
-        ERC721(_name, _symbol)
-    {}
+    function initialize(string memory _name, string memory _symbol)
+        public
+        initializer
+    {
+        __Ownable_init();
+        __ERC721_init(_name, _symbol);
+    }
 
     modifier notExpiry(uint256 _courseId) {
         uint256 expiryDate = expiryForCourses[_courseId];
