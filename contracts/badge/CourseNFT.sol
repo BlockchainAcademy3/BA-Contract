@@ -12,6 +12,8 @@ contract CourseNFT is OwnableUpgradeable, ERC721Upgradeable {
 
     uint256 public counter;
 
+    string public baseURI;
+
     // Token id => Course Id
     // Course id is an index for the server to query the course
     // After querying the correct course, the server can get the event data
@@ -22,7 +24,8 @@ contract CourseNFT is OwnableUpgradeable, ERC721Upgradeable {
     // If expiry == 0, the NFT is always available for mint
     mapping(uint256 => uint256) public expiryForCourses;
 
-    string public baseURI;
+    // User address => course id => token id
+    mapping(address => mapping(uint256 => uint256)) public userMinted;
 
     event BaseURIChanged(string oldURI, string newURI);
 
@@ -32,6 +35,8 @@ contract CourseNFT is OwnableUpgradeable, ERC721Upgradeable {
         uint256 indexed courseId
     );
 
+    event CourseNFTBurned(uint256 indexed tokenId, uint256 indexed courseId);
+
     function initialize(string memory _name, string memory _symbol)
         public
         initializer
@@ -40,7 +45,7 @@ contract CourseNFT is OwnableUpgradeable, ERC721Upgradeable {
         __ERC721_init(_name, _symbol);
     }
 
-    modifier notExpiry(uint256 _courseId) {
+    modifier notExpired(uint256 _courseId) {
         uint256 expiryDate = expiryForCourses[_courseId];
         if (expiryDate != 0) {
             require(
@@ -57,10 +62,16 @@ contract CourseNFT is OwnableUpgradeable, ERC721Upgradeable {
     }
 
     function mint(address _to, uint256 _courseId)
-        public
-        notExpiry(_courseId)
+        external
+        notExpired(_courseId)
+        onlyOwner
         returns (uint256)
     {
+        require(
+            userMinted[_to][_courseId] == 0,
+            "CourseNFT: user already minted this course"
+        );
+
         uint256 tokenId = counter++;
 
         _safeMint(_to, tokenId);
@@ -68,9 +79,25 @@ contract CourseNFT is OwnableUpgradeable, ERC721Upgradeable {
         // Record this token's course Id
         courseIds[tokenId] = _courseId;
 
+        userMinted[_to][_courseId] = tokenId;
+
         emit CourseNFTMinted(_to, tokenId, _courseId);
 
         return tokenId;
+    }
+
+    function burn(uint256 _tokenId) external {
+        require(
+            ownerOf[_tokenId] == msg.sender,
+            "Only the token owner can burn"
+        );
+
+        _burn(_tokenId);
+
+        uint256 courseId = courseIds[_tokenId];
+        delete userMinted[msg.sender][courseId];
+
+        emit CourseNFTBurned(_tokenId, courseId);
     }
 
     function tokenURI(uint256 _tokenId) public view returns (string memory) {

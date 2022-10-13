@@ -1,0 +1,11 @@
+{
+  "localhost": {},
+  "goerli": {
+    "ProxyAdmin": "0x44c6C8326D64dbaA2F3F0f5d4F4Cf9a7d185Ce15",
+    "POANFT": "0x6e95Fc19611cebD936B22Fd1A15D53d98bb31dAF",
+    "CourseNFT": "0x007a978861b169eCc8FB397dd875Ea246CBBF1dA",
+    "ProfileNFT": "0x4f6a37DAF8E5A07E1a9A7784CAC6f9476302a04a",
+    "CertificationNFT": "0xfa59659b64Bb5e011ca2f96247A6cD3faBc6AA5B"
+  },
+  "eth": {}
+}
