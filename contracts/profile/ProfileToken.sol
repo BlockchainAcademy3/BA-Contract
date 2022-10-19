@@ -4,7 +4,7 @@ pragma solidity ^0.8.17;
 
 import "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
 import "./SoulBoundToken.sol";
-
+import "../base/ILinkableSBT.sol";
 import "@openzeppelin/contracts/utils/Strings.sol";
 
 /**
@@ -23,7 +23,7 @@ import "@openzeppelin/contracts/utils/Strings.sol";
  *
  */
 
-contract ProfileToken is OwnableUpgradeable, SoulBoundToken {
+contract ProfileToken is OwnableUpgradeable, SoulBoundToken, ILinkableSBT {
     using Strings for uint256;
 
     string public baseURI;
@@ -65,5 +65,14 @@ contract ProfileToken is OwnableUpgradeable, SoulBoundToken {
 
     function burn() public {
         _burn(soulBoundTokenId[msg.sender]);
+    }
+
+    function onERC721Linked(
+        address,
+        uint256,
+        address,
+        uint256
+    ) external pure returns (bytes4) {
+        return ILinkableSBT.onERC721Linked.selector;
     }
 }

@@ -4,7 +4,7 @@ pragma solidity ^0.8.17;
 
 import "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
 import "../base/ERC721Upgradeable.sol";
-
+import "../base/Linkable.sol";
 import "@openzeppelin/contracts/utils/Strings.sol";
 
 /**
@@ -22,8 +22,12 @@ import "@openzeppelin/contracts/utils/Strings.sol";
  *         Certification NFT is a ERC721 token.
  *
  */
-contract CertificationNFT is OwnableUpgradeable, ERC721Upgradeable {
+contract CertificationNFT is OwnableUpgradeable, ERC721Upgradeable, Linkable {
     using Strings for uint256;
+
+    // ---------------------------------------------------------------------------------------- //
+    // ************************************* Variables **************************************** //
+    // ---------------------------------------------------------------------------------------- //
 
     uint256 counter;
 
@@ -34,6 +38,10 @@ contract CertificationNFT is OwnableUpgradeable, ERC721Upgradeable {
 
     // User address => certification id => token id
     mapping(address => mapping(uint256 => uint256)) public userMinted;
+
+    // ---------------------------------------------------------------------------------------- //
+    // *************************************** Events ***************************************** //
+    // ---------------------------------------------------------------------------------------- //
 
     event BaseURIChanged(string oldURI, string newURI);
 
@@ -48,6 +56,10 @@ contract CertificationNFT is OwnableUpgradeable, ERC721Upgradeable {
         uint256 indexed certificationId
     );
 
+    // ---------------------------------------------------------------------------------------- //
+    // ************************************* Constructor ************************************** //
+    // ---------------------------------------------------------------------------------------- //
+
     function initialize(string memory _name, string memory _symbol)
         public
         initializer
@@ -56,10 +68,18 @@ contract CertificationNFT is OwnableUpgradeable, ERC721Upgradeable {
         __ERC721_init(_name, _symbol);
     }
 
+    // ---------------------------------------------------------------------------------------- //
+    // ************************************ Set Functions ************************************* //
+    // ---------------------------------------------------------------------------------------- //
+
     function setBaseURI(string memory _uri) public onlyOwner {
         emit BaseURIChanged(_uri, baseURI);
         baseURI = _uri;
     }
+
+    // ---------------------------------------------------------------------------------------- //
+    // ************************************ Main Functions ************************************ //
+    // ---------------------------------------------------------------------------------------- //
 
     function mint(address _to, uint256 _certificationId)
         external
@@ -101,6 +121,10 @@ contract CertificationNFT is OwnableUpgradeable, ERC721Upgradeable {
     function tokenURI(uint256 _tokenId) public view returns (string memory) {
         return _tokenURI(_tokenId);
     }
+
+    // ---------------------------------------------------------------------------------------- //
+    // *********************************** Internal Functions ********************************* //
+    // ---------------------------------------------------------------------------------------- //
 
     /**
      * @notice Generate the token URI

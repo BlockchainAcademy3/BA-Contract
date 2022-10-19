@@ -27,15 +27,14 @@ const config: HardhatUserConfig = {
 
       timeout: 60000,
     },
-    // eth: {
-    //   url: process.env.FUJI_URL || "",
-    //   accounts: {
-    //     mnemonic:
-    //       process.env.PHRASE_FUJI !== undefined ? process.env.PHRASE_FUJI : "",
-    //     count: 20,
-    //   },
-    //   timeout: 60000,
-    // },
+    eth: {
+      url: process.env.ETH_URL || "",
+      accounts: process.env.PK_ETH !== undefined ? [process.env.PK_ETH] : [],
+      timeout: 60000,
+    },
+  },
+  gasReporter: {
+    enabled: true,
   },
 };
 

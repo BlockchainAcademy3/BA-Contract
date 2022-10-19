@@ -2,7 +2,8 @@
   "name": "hardhat-project",
   "scripts": {
     "compile": "npx hardhat compile",
-    "test": "npx hardhat test"
+    "test": "npx hardhat test",
+    "deploy": "npx hardhat deploy"
   },
   "devDependencies": {
     "@ethersproject/abi": "^5.7.0",

@@ -50,7 +50,7 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
     args: [],
     log: true,
   });
-  addressList[network.name].ProfileNFT = certificationNFT.address;
+  addressList[network.name].CertificationNFT = certificationNFT.address;
 
   console.log("\ndeployed to address: ", certificationNFT.address);
 

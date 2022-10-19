@@ -4,11 +4,15 @@ pragma solidity ^0.8.17;
 
 import "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
 import "../base/ERC721Upgradeable.sol";
-
+import "../base/Linkable.sol";
 import "@openzeppelin/contracts/utils/Strings.sol";
 
-contract CourseNFT is OwnableUpgradeable, ERC721Upgradeable {
+contract CourseNFT is OwnableUpgradeable, ERC721Upgradeable, Linkable {
     using Strings for uint256;
+
+    // ---------------------------------------------------------------------------------------- //
+    // ************************************* Variables **************************************** //
+    // ---------------------------------------------------------------------------------------- //
 
     uint256 public counter;
 
@@ -27,6 +31,10 @@ contract CourseNFT is OwnableUpgradeable, ERC721Upgradeable {
     // User address => course id => token id
     mapping(address => mapping(uint256 => uint256)) public userMinted;
 
+    // ---------------------------------------------------------------------------------------- //
+    // *************************************** Events ***************************************** //
+    // ---------------------------------------------------------------------------------------- //
+
     event BaseURIChanged(string oldURI, string newURI);
 
     event CourseNFTMinted(
@@ -37,6 +45,10 @@ contract CourseNFT is OwnableUpgradeable, ERC721Upgradeable {
 
     event CourseNFTBurned(uint256 indexed tokenId, uint256 indexed courseId);
 
+    // ---------------------------------------------------------------------------------------- //
+    // ************************************* Constructor ************************************** //
+    // ---------------------------------------------------------------------------------------- //
+
     function initialize(string memory _name, string memory _symbol)
         public
         initializer
@@ -44,6 +56,10 @@ contract CourseNFT is OwnableUpgradeable, ERC721Upgradeable {
         __Ownable_init();
         __ERC721_init(_name, _symbol);
     }
+
+    // ---------------------------------------------------------------------------------------- //
+    // ************************************** Modifiers *************************************** //
+    // ---------------------------------------------------------------------------------------- //
 
     modifier notExpired(uint256 _courseId) {
         uint256 expiryDate = expiryForCourses[_courseId];
@@ -56,10 +72,18 @@ contract CourseNFT is OwnableUpgradeable, ERC721Upgradeable {
         _;
     }
 
+    // ---------------------------------------------------------------------------------------- //
+    // ************************************ Set Functions ************************************* //
+    // ---------------------------------------------------------------------------------------- //
+
     function setBaseURI(string memory _uri) public onlyOwner {
         emit BaseURIChanged(_uri, baseURI);
         baseURI = _uri;
     }
+
+    // ---------------------------------------------------------------------------------------- //
+    // ************************************ Main Functions ************************************ //
+    // ---------------------------------------------------------------------------------------- //
 
     function mint(address _to, uint256 _courseId)
         external
@@ -103,6 +127,10 @@ contract CourseNFT is OwnableUpgradeable, ERC721Upgradeable {
     function tokenURI(uint256 _tokenId) public view returns (string memory) {
         return _tokenURI(_tokenId);
     }
+
+    // ---------------------------------------------------------------------------------------- //
+    // *********************************** Internal Functions ********************************* //
+    // ---------------------------------------------------------------------------------------- //
 
     /**
      * @notice Generate the token URI

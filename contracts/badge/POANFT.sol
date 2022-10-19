@@ -5,7 +5,7 @@ pragma solidity ^0.8.17;
 import "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/security/PausableUpgradeable.sol";
 import "../base/ERC721Upgradeable.sol";
-
+import "../base/Linkable.sol";
 import "@openzeppelin/contracts/utils/Strings.sol";
 
 /**
@@ -20,7 +20,12 @@ import "@openzeppelin/contracts/utils/Strings.sol";
  *           Token id 2 and 5 are both for event 1, then
  *           tokenURI(2) = tokenURI(5) = "https://api.web3edu.xyz/poa/1
  */
-contract POANFT is OwnableUpgradeable, PausableUpgradeable, ERC721Upgradeable {
+contract POANFT is
+    OwnableUpgradeable,
+    PausableUpgradeable,
+    ERC721Upgradeable,
+    Linkable
+{
     using Strings for uint256;
 
     // ---------------------------------------------------------------------------------------- //
@@ -178,6 +183,10 @@ contract POANFT is OwnableUpgradeable, PausableUpgradeable, ERC721Upgradeable {
 
         emit POANFTBurned(_tokenId, eventIds[_tokenId]);
     }
+
+    // ---------------------------------------------------------------------------------------- //
+    // *********************************** Internal Functions ********************************* //
+    // ---------------------------------------------------------------------------------------- //
 
     /**
      * @notice Generate the token URI

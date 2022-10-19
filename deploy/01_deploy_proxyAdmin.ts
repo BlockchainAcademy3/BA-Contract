@@ -23,6 +23,9 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
   console.log("-----  Deployer: ", deployer);
   console.log("-----------------------------------------------------------\n");
 
+  const balance = await hre.ethers.provider.getBalance(deployer);
+  console.log("Deployer balance: ", balance.toString());
+
   // Read address list from local file
   const addressList = readAddressList();
 
